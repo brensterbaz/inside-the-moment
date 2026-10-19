@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.vercel/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.local
+*.pem
+*.key
+
+# Imported conversation stays local; public project briefs are included.
+docs/source/SHARED_CHAT.md
