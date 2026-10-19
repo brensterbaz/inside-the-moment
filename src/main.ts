@@ -20,6 +20,8 @@ import { explain, type Detail, type Language } from "./analyst";
 import { Stadium, views, type View } from "./stadium";
 import { XRExperience } from "./xr";
 import { ReplayDock } from "./replay-dock";
+import { AnalysisClient, RecapTrigger } from "./analysis-client";
+import type { AnalysisRequest, AnalysisResult } from "./analysis-contract";
 
 const icon = (name: string) => {
   const paths: Record<string, string> = {
@@ -85,18 +87,19 @@ app.innerHTML = `
       <div class="status-line"><span id="status" role="status">Open Timeline to play, rewind or jump to the decisive pass.</span><span class="shortcut">SPACE <span>play / pause</span></span></div>
     </section>
     <aside class="insight-column" aria-label="Match insights">
-      <div class="insight-heading"><span class="eyebrow">SEE THE WHY</span><span class="local-badge">SCRIPTED DEMO</span></div>
+      <div class="insight-heading"><span class="eyebrow">SEE THE WHY</span><span class="local-badge" id="analysis-badge">SCRIPTED DEMO</span></div>
       <h2 class="insight-title">A little perspective.<br>A different game.</h2>
       <div class="analyst-settings"><div class="segmented" aria-label="Explanation detail"><button data-detail="fan" aria-pressed="true">Fan</button><button data-detail="analyst" aria-pressed="false">Analyst</button></div><label class="sr-only" for="language">Explanation language</label><select id="language" aria-label="Explanation language"><option value="en">EN</option><option value="es">ES</option></select></div>
+      <div class="analysis-controls"><label><input id="local-ai" type="checkbox"/> Use local AI</label><button id="analysis-run" class="text-button" disabled>Generate explanation ↗</button><p id="analysis-status" role="status">Scripted mode · local AI not connected</p></div>
       <div class="question-list"><button data-topic="space" aria-pressed="true">Why was Vela free? <span>↗</span></button><button data-topic="pass" aria-pressed="false">Show me the decisive pass <span>↗</span></button><button data-topic="recap" aria-pressed="false">Recap this moment <span>↗</span></button></div>
-      <article class="answer" id="answer" aria-label="Local analyst explanation"><div class="answer-symbol">✳</div><span class="eyebrow" id="answer-context">FEATURED MOMENT · 23.0s</span><h3 id="answer-title"></h3><p id="answer-body"></p><div class="answer-metric"><strong id="metric"></strong><span id="metric-label"></span></div><div class="evidence" id="evidence"></div><p class="source-note">Calculated from our authored match. Scripted explanations; live AI and voice are not connected.</p></article>
+      <article class="answer" id="answer" aria-label="Match explanation"><div class="answer-symbol">✳</div><span class="eyebrow" id="answer-context">FEATURED MOMENT · 23.0s</span><h3 id="answer-title"></h3><p id="answer-body"></p><div class="answer-metric"><strong id="metric"></strong><span id="metric-label"></span></div><div class="evidence" id="evidence"></div><p class="source-note" id="analysis-source">Scripted explanation calculated from our authored match. Voice is not connected.</p></article>
       <section class="tactical" aria-label="Tactical overview"><div class="tactical-heading"><h3>The whole picture</h3><span>ATTACKING →</span></div><svg id="minimap" viewBox="-57 -39 114 78" role="img" aria-label="Live tactical pitch. Use the player dropdown or scene to select players."><rect class="map-turf" x="-56" y="-38" width="112" height="76" rx="3"/><g class="map-lines"><rect x="-52.5" y="-34" width="105" height="68"/><path d="M0-34V34"/><circle r="9.15"/><path d="M-52.5-20.16H-36V20.16H-52.5M52.5-20.16H36V20.16H52.5M-52.5-9.16H-47V9.16H-52.5M52.5-9.16H47V9.16H52.5"/></g><g id="map-players"></g><circle id="map-ball" r="1.1" fill="#fff"/><circle id="map-destination" r="2.4" fill="none" stroke="#d8ff8d" stroke-width=".6" visibility="hidden"/></svg><div class="map-caption"><span><i class="home-dot"></i>Northbank <i class="away-dot"></i>Eastford</span><button id="map-move" class="text-button">Choose a viewpoint ↗</button></div></section>
       <section class="selected-player"><div class="shirt-number" id="shirt-number">9</div><div><label class="eyebrow" for="player-select">FOLLOW A PLAYER</label><select id="player-select">${players.map((p) => `<option value="${p.id}" ${p.id === "h9" ? "selected" : ""}>${p.name}</option>`).join("")}</select><span id="player-role">Centre forward · Northbank</span></div><button id="player-info" class="icon-button" aria-label="Explain selected player">${icon("arrow")}</button></section>
       <div class="data-strip"><div><span>COMPLETED PASSES</span><strong id="pass-count">2</strong></div><div><span>PLAYER SPEED</span><strong><span id="player-speed">0.0</span><small>km/h</small></strong></div></div>
     </aside>
   </main>
   <footer class="app-footer"><span>INSIDE THE MOMENT <b>/</b> FIRST PLAYABLE</span><span>Original teams. Synthetic data. A new perspective.</span></footer>
-  <dialog id="help-dialog"><button class="dialog-close icon-button" id="close-help" aria-label="Close help">${icon("close")}</button><span class="eyebrow">MAKE THE MOMENT YOURS</span><h2>You’re in control.</h2><div class="help-grid"><div><h3>Explore</h3><p>Drag the stadium to orbit. Scroll to zoom. Click a player or choose their name. Pick a camera or a point on the pitch, then confirm your move.</p></div><div><h3>Control time</h3><p><kbd>Space</kbd> play/pause · <kbd>←</kbd> / <kbd>→</kbd> seek 3s · <kbd>Esc</kbd> cancel a move. Jump to an event or drag the timeline.</p></div><div><h3>Try a command</h3><p>“Freeze”, “back three seconds”, “rewind to before the pass”, “show me that passing lane”, “why was he free?”, “return to seat”, “clear everything. play.”</p></div><div><h3>On a headset</h3><p>Use a WebXR-compatible browser on a secure URL. Trigger selects players and the timeline. Point at the pitch, then confirm in the floating panel. Grip summons the panel.</p></div></div><div class="help-note"><strong>This is the local first version.</strong> Explanations and commands are deterministic, not a connected AI model. No microphone is used. Actual Quest 2 testing and Azure integration are still pending.</div></dialog>`;
+  <dialog id="help-dialog"><button class="dialog-close icon-button" id="close-help" aria-label="Close help">${icon("close")}</button><span class="eyebrow">MAKE THE MOMENT YOURS</span><h2>You’re in control.</h2><div class="help-grid"><div><h3>Explore</h3><p>Drag the stadium to orbit. Scroll to zoom. Click a player or choose their name. Pick a camera or a point on the pitch, then confirm your move.</p></div><div><h3>Control time</h3><p><kbd>Space</kbd> play/pause · <kbd>←</kbd> / <kbd>→</kbd> seek 3s · <kbd>Esc</kbd> cancel a move. Jump to an event or drag the timeline.</p></div><div><h3>Try a command</h3><p>“Freeze”, “back three seconds”, “rewind to before the pass”, “show me that passing lane”, “why was he free?”, “return to seat”, “clear everything. play.”</p></div><div><h3>On a headset</h3><p>Use a WebXR-compatible browser on a secure URL. Trigger selects players and the timeline. Point at the pitch, then confirm in the floating panel. Grip summons the panel.</p></div></div><div class="help-note"><strong>Check the explanation source.</strong> Foundry Local runs AI on the development Mac when connected. Scripted explanations remain available. Typed replay commands are deterministic; no microphone is used. Quest hardware testing and Azure cloud integration remain pending.</div></dialog>`;
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -118,8 +121,27 @@ const dock = new ReplayDock($("viewport"), icon, () => {
 const notify = (message: string) => {
   $("status").textContent = message;
 };
-function answer() {
-  const a = explain(topic, detail, language, selected, clock.time);
+const analysisClient = new AnalysisClient();
+const recapTrigger = new RecapTrigger();
+let localReady = false,
+  useFoundry = import.meta.env.VITE_FOUNDRY_LOCAL === "1",
+  analysisRevision = 0;
+let sharedAnswer = explain(topic, detail, language, selected, clock.time);
+let sharedSource = "SCRIPTED DEMO";
+$<HTMLInputElement>("local-ai").checked = useFoundry;
+$<HTMLInputElement>("local-ai").disabled =
+  import.meta.env.VITE_FOUNDRY_LOCAL !== "1";
+function answer(result?: AnalysisResult) {
+  const a =
+    result?.answer ?? explain(topic, detail, language, selected, clock.time);
+  sharedAnswer = a;
+  sharedSource = result ? "AI-CURATED · LOCAL" : "SCRIPTED DEMO";
+  $("analysis-badge").textContent = sharedSource;
+  $("analysis-source").textContent = result
+    ? `AI-curated locally · ${result.model} · ${result.cached ? "cached selection" : `${(result.elapsedMs / 1000).toFixed(1)}s`}. The model selects verified statements; the app supplies their wording, required context, metrics and timestamp links.`
+    : "Scripted explanation calculated from our authored match. Voice is not connected.";
+  app.dataset.analysisState = result ? "foundry-local" : "scripted";
+  $("answer").setAttribute("aria-busy", "false");
   $("answer-title").textContent = a.title;
   $("answer-body").textContent = a.body;
   $("metric").textContent = a.metric;
@@ -129,7 +151,9 @@ function answer() {
       ? `SELECTED PLAYER · ${clock.time.toFixed(1)}s`
       : topic === "recap"
         ? "FULL MOMENT · 0–30s"
-        : "FEATURED EVIDENCE · 21.5–23.0s";
+        : topic === "space"
+          ? "FEATURED EVIDENCE · 18.0–23.0s"
+          : "FEATURED EVIDENCE · 21.5–23.0s";
   $("evidence").replaceChildren();
   for (const e of a.evidence) {
     const b = document.createElement("button");
@@ -152,9 +176,89 @@ function answer() {
       ),
     );
 }
+function clearAnalysis() {
+  analysisRevision++;
+  analysisClient.invalidate();
+  $<HTMLButtonElement>("analysis-run").disabled = !localReady || !useFoundry;
+  $("analysis-status").textContent = !useFoundry
+    ? "Scripted mode selected."
+    : localReady
+      ? "Foundry Local ready · choose a question or generate an explanation"
+      : "Local AI is not connected. Showing a scripted explanation.";
+  answer();
+}
+async function generateAnalysis() {
+  clearAnalysis();
+  if (!useFoundry || !localReady) return;
+  clock.playing = false;
+  updateUI();
+  const revision = analysisRevision;
+  const request: AnalysisRequest = {
+    topic,
+    detail,
+    language,
+    selected,
+    time: Math.round(clock.time * 20) / 20,
+  };
+  app.dataset.analysisState = "loading";
+  sharedSource = "LOCAL AI · GENERATING";
+  $("analysis-status").textContent =
+    "Generating locally on this Mac… Replay controls remain available.";
+  $("answer").setAttribute("aria-busy", "true");
+  $<HTMLButtonElement>("analysis-run").disabled = true;
+  try {
+    const result = await analysisClient.request(request);
+    if (!result || revision !== analysisRevision) return;
+    answer(result);
+    $("analysis-status").textContent =
+      `Foundry Local · ${result.cached ? "cached for this evidence and preferences" : "answer generated on this Mac"}`;
+  } catch (error) {
+    if (revision !== analysisRevision) return;
+    answer();
+    app.dataset.analysisState = "error";
+    $("analysis-status").textContent =
+      `${error instanceof Error ? error.message : "Local AI unavailable."} Showing the scripted explanation.`;
+  } finally {
+    if (revision === analysisRevision)
+      $<HTMLButtonElement>("analysis-run").disabled =
+        !localReady || !useFoundry;
+  }
+}
+async function checkLocalAnalyst() {
+  if (import.meta.env.VITE_FOUNDRY_LOCAL !== "1") return;
+  try {
+    const response = await fetch("/api/analysis/health", {
+      signal: AbortSignal.timeout(3000),
+    });
+    const health = await response.json();
+    localReady =
+      response.ok &&
+      health.provider === "foundry-local" &&
+      health.phase === "ready";
+    const generating = app.dataset.analysisState === "loading";
+    $<HTMLButtonElement>("analysis-run").disabled =
+      !localReady || !useFoundry || generating;
+    if (!localReady) {
+      $("analysis-status").textContent =
+        health.phase === "error"
+          ? "Local model setup failed. Scripted explanations remain available."
+          : `Foundry Local: ${health.phase}${health.phase === "downloading" ? ` ${health.progress}%` : ""}. Scripted explanation shown while it starts.`;
+      if (health.phase !== "error")
+        window.setTimeout(() => void checkLocalAnalyst(), 3000);
+    } else if (!generating)
+      $("analysis-status").textContent =
+        "Foundry Local ready · choose a question or generate an explanation";
+  } catch {
+    localReady = false;
+    $("analysis-status").textContent =
+      "Local analyst is not running. Scripted explanations remain available.";
+    window.setTimeout(() => void checkLocalAnalyst(), 5000);
+  }
+}
 function setTopic(next: Topic) {
   topic = next;
-  answer();
+  clearAnalysis();
+  if (useFoundry) void generateAnalysis();
   if (next === "space" || next === "pass")
     setLayers(next === "pass" || selected === "h9");
 }
@@ -166,7 +270,7 @@ function seek(time: number) {
   clock.seek(time);
   clock.playing = false;
   updateUI();
-  if (topic === "player" || (topic === "space" && selected !== "h9")) answer();
+  clearAnalysis();
 }
 function setLayers(value: boolean) {
   layers = value;
@@ -185,7 +289,7 @@ function select(id: string) {
   $("shirt-number").classList.toggle("away", p.team === "away");
   $("player-role").textContent =
     `${p.role} · ${p.team === "home" ? "Northbank" : "Eastford"}`;
-  if (topic === "player" || topic === "space") answer();
+  clearAnalysis();
   updateUI();
 }
 function preview(view: View) {
@@ -279,12 +383,14 @@ function beforePass() {
 }
 function toggle() {
   engage();
+  clearAnalysis();
   clock.toggle();
   updateUI();
 }
 function runCommand(input: string) {
   engage();
   const c = parseCommand(input);
+  if (c.type !== "explain") clearAnalysis();
   switch (c.type) {
     case "pause":
       clock.playing = false;
@@ -319,7 +425,7 @@ function runCommand(input: string) {
       if (/vela|striker/i.test(input)) select("h9");
       setTopic(c.topic);
       notify(
-        "Explanation ready. Use the evidence links to inspect the recorded positions.",
+        "Use the evidence links to inspect recorded positions. Check the explanation source for local AI or scripted output.",
       );
       break;
     case "seat":
@@ -375,7 +481,8 @@ try {
       playing: clock.playing,
       selected: players.find((p) => p.id === selected)!.name,
       pending: !!pending,
-      answer: explain(topic, detail, language, selected, clock.time).body,
+      answer: sharedAnswer.body,
+      source: sharedSource,
     }),
     notify,
   );
@@ -492,12 +599,14 @@ document.querySelectorAll<HTMLButtonElement>("[data-detail]").forEach(
             String((el as HTMLElement).dataset.detail === detail),
           ),
         );
-      answer();
+      clearAnalysis();
+      if (useFoundry) void generateAnalysis();
     }),
 );
 $<HTMLSelectElement>("language").onchange = (e) => {
   language = (e.target as HTMLSelectElement).value as Language;
-  answer();
+  clearAnalysis();
+  if (useFoundry) void generateAnalysis();
   $("answer").lang = language;
 };
 $<HTMLSelectElement>("player-select").onchange = (e) =>
@@ -506,6 +615,15 @@ $("player-info").onclick = () => {
   setTopic("player");
   dock.open("menu");
 };
+$<HTMLInputElement>("local-ai").onchange = (e) => {
+  useFoundry = (e.target as HTMLInputElement).checked;
+  clearAnalysis();
+  if (useFoundry) {
+    void checkLocalAnalyst();
+    void generateAnalysis();
+  }
+};
+$("analysis-run").onclick = () => void generateAnalysis();
 $("confirm-move").onclick = confirm;
 $("cancel-move").onclick = () => {
   cancel();
@@ -608,7 +726,15 @@ let previous = performance.now();
 function frame(now: number) {
   const delta = Math.min((now - previous) / 1000, 0.1);
   previous = now;
+  const wasPlaying = clock.playing;
   clock.tick(delta);
+  if (recapTrigger.update(clock.time, wasPlaying)) {
+    setTopic("recap");
+    if (!pending && !stage?.renderer.xr.isPresenting) dock.open("menu");
+    notify(
+      "Full-moment recap · includes the final goal from the complete synthetic sequence.",
+    );
+  }
   stage?.update(clock.time, delta);
   xr?.update(now);
   stage?.render();
@@ -618,6 +744,7 @@ function frame(now: number) {
   }
 }
 answer();
+void checkLocalAnalyst();
 updateUI();
 if (stage) stage.renderer.setAnimationLoop(frame);
 else {

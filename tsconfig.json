@@ -8,7 +8,7 @@
     "noEmit": true,
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
-    "types": ["vite/client", "webxr"]
+    "types": ["vite/client", "webxr", "node"]
   },
-  "include": ["src", "tests"]
+  "include": ["src", "tests", "server", "scripts/*.ts"]
 }

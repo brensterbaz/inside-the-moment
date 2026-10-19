@@ -2,6 +2,8 @@
 
 Prepared on **19 October 2026**. This is the proposed first Azure integration, not an implemented or deployed backend. The current app still uses its labelled scripted analyst. No Azure resource, model deployment, credential or billable request has been created by this work.
 
+Later on 19 October, the user chose the zero-cloud-cost **Foundry Local** development route. Its implementation and verification are in [FOUNDRY_LOCAL.md](FOUNDRY_LOCAL.md). It uses genuine local inference to curate verified statements, while the public static site remains scripted. The cloud design below is a future proposal; no Azure cloud resource has been activated.
+
 ## First milestone
 
 Make the existing replay explain its recorded football evidence through a genuine Microsoft Foundry model. Preserve the existing synthetic match, deterministic replay clock, desktop controls and WebXR movement safeguards.

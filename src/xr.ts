@@ -6,6 +6,7 @@ export type XRState = {
   selected: string;
   pending: boolean;
   answer: string;
+  source: string;
 };
 type Button = {
   x: number;
@@ -248,11 +249,7 @@ export class XRExperience {
     c.fillText("INSIDE THE MOMENT", 40, 50);
     c.font = "22px sans-serif";
     c.fillStyle = "#a8bbb8";
-    c.fillText(
-      `LOCAL DEMO · scripted analyst     ${s.time.toFixed(1)} / 30.0s`,
-      40,
-      88,
-    );
+    c.fillText(`${s.source}     ${s.time.toFixed(1)} / 30.0s`, 40, 88);
     c.fillStyle = "#3a4c4b";
     c.fillRect(40, 137, 1120, 9);
     c.fillStyle = "#c8f789";
