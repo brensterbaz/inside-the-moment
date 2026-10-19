@@ -1,6 +1,6 @@
 # Foundry Local analyst
 
-The desktop development build can use a real model through Microsoft Foundry Local on the Mac. This is local inference with no Azure subscription, provider API key or per-token bill. The public Vercel test site remains the previously deployed scripted build; this change does not deploy a backend or expose the Mac to the internet.
+The development build can use a real model through Microsoft Foundry Local on the Mac. This is local inference with no Azure subscription, provider API key or per-token bill. The public Vercel test site remains the previously deployed scripted build. An optional [protected temporary HTTPS gateway](HEADSET_WIFI.md) now lets a Quest reach this local model; the ordinary development API remains loopback-only.
 
 ## Run
 
@@ -69,7 +69,7 @@ The API also rejects unknown players/times/preferences, extra request fields, bo
 
 ## Deployment and hardware boundary
 
-This implementation is for the development Mac. Neither the native SDK nor model weights belong in the static frontend bundle. A Quest viewing the existing public test site cannot use this loopback API. Serving the model to a headset or judges would require a separately tested secure connection and an authorised hosting/access decision. Actual Quest performance, controller comfort and headset AI use remain untested.
+Inference runs on the development Mac. Neither the native SDK nor model weights belong in the static frontend bundle. A Quest viewing the existing public test site cannot use the loopback API. Under the user's later request for Wi-Fi headset access, a separate [authenticated temporary relay](HEADSET_WIFI.md) serves the dedicated frontend and forwards only the known analysis routes. This is not a permanent hosted backend. Actual Quest performance, controller comfort and headset AI use remain untested until verified on the device.
 
 The installed native SDK emits an upstream Objective-C warning about a duplicate `MATStreamingSessionDelegate` class on this Mac. Treat any native crash as a runtime failure and keep the scripted fallback; do not suppress errors or claim that the warning has been fixed in application code.
 

@@ -23,6 +23,8 @@ Open **http://127.0.0.1:5174/**. Open Timeline to play or jump to the decisive p
 
 For the real local analyst, run `npm run dev:foundry` instead of `npm run dev`, wait for model setup, then open **Menu → Generate explanation**. The first start downloads the model; no Azure subscription or paid API is used. The public test site remains the earlier scripted deployment.
 
+For the current version on Quest over Wi-Fi, use the [temporary HTTPS headset session](docs/HEADSET_WIFI.md). Its access code protects the app and local model, and the Mac must stay awake. This path does not require an Azure subscription or a USB cable.
+
 ## Start here
 
 - [Project brief](docs/PROJECT_BRIEF.md): experience, scope, architecture, decisions and build order.
