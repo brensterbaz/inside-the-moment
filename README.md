@@ -25,6 +25,7 @@ Open **http://127.0.0.1:5174/**. Open Timeline to play or jump to the decisive p
 
 - [Project brief](docs/PROJECT_BRIEF.md): experience, scope, architecture, decisions and build order.
 - [Hackathon requirements](docs/HACKATHON.md): official sources and dates checked during import.
+- [Azure integration proposal](docs/AZURE_INTEGRATION.md): first analyst milestone, server boundary, funding gate and verification plan; no Azure backend is connected yet.
 - The imported shared-chat archive is retained locally and excluded from the public repository.
 - [Official participant brief](docs/source/OFFICIAL_BRIEF.md): imported challenge, judging rubric, submission details and resource links.
 - [Codex working instructions](AGENTS.md): context to preserve in future work.

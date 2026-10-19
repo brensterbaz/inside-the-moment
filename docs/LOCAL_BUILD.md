@@ -76,6 +76,10 @@ Before claiming headset readiness, verify session entry/exit, controller aim, pa
 
 - Normal-mode dock follow-up: all four panels checked at 320px viewport width without horizontal overflow; timeline seeks, viewpoint preview/cancel, Help and speed preferences work. Fullscreen entry/exit preserves the selected panel and replay timestamp.
 
+## Recheck on 19 October 2026
+
+The existing six replay tests and TypeScript/Vite production build pass. The build still reports the large Three.js bundle warning; this does not establish Quest performance. Source is now published at [brensterbaz/inside-the-moment](https://github.com/brensterbaz/inside-the-moment), with environment files, hosting settings and the imported conversation excluded. The [Azure integration proposal](AZURE_INTEGRATION.md) defines the next backend milestone; no provider adapter or cloud resource has been implemented by this documentation/repository task. No new desktop interaction or hardware test was performed during this recheck.
+
 ## Architecture
 
 `match.ts` holds authored records. `replay.ts` samples them without hidden history. `analyst.ts` derives structured answers and evidence. `stadium.ts` renders the clock's state. `xr.ts` sends headset interactions through the same actions. `main.ts` connects those actions to the desktop interface. `replay-dock.ts` mounts the same DOM controls in shared scene panels for normal and fullscreen modes, keeping their listeners and state intact.
