@@ -1707,3 +1707,40 @@ kbd {
     top: 64px;
   }
 }
+.analysis-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 10px 0;
+}
+.analysis-controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.analysis-controls input {
+  width: 18px;
+  height: 18px;
+  accent-color: #c8f789;
+}
+.analysis-controls p {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #a8bbb8;
+}
+.analysis-controls button {
+  min-height: 44px;
+}
+.analysis-controls button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+[data-analysis-state="loading"] #analysis-badge {
+  opacity: 0.7;
+}

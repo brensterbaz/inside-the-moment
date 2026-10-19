@@ -115,6 +115,7 @@ export class ReplayDock {
       menu: [
         ".insight-heading",
         ".selected-player",
+        ".analysis-controls",
         ".question-list",
         "#answer",
         "#command-form",

@@ -1,5 +1,7 @@
 # First playable — v0.1
 
+**19 October update:** the desktop development build now supports genuine Foundry Local inference to curate verified match statements. Run `npm run dev:foundry`; see [setup, model contract and verification](FOUNDRY_LOCAL.md). Cloud AI and speech remain disconnected, the existing HTTPS site remains scripted, and Quest hardware testing is pending. The original 15 October build record below describes the scripted foundation.
+
 Built locally on **15 October 2026**. This is an original, interactive replay prototype with a deterministic local analysis adapter. It is not a connected AI service or a finished hackathon submission.
 
 An HTTPS test deployment is now available at **https://inside-the-moment.vercel.app/**. See [deployment and Quest instructions](DEPLOYMENT.md). Physical headset verification is still pending.

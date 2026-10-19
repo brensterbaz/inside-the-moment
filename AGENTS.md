@@ -9,6 +9,7 @@ Read `README.md` and `docs/PROJECT_BRIEF.md` before implementation. The original
 - Start with one fictional match and a detailed 30-second attacking sequence using synthetic football-realistic data.
 - The proposed rendering stack is Three.js and WebXR. First interaction uses controllers; hand gestures are a later enhancement.
 - Azure use is conditional on the user receiving hackathon credits. Do not incur charges or provision paid services on the assumption that credits exist.
+- On 19 October 2026 the user authorised developing with Foundry Local at no cloud cost. See `docs/FOUNDRY_LOCAL.md`: a native local model curates verified statements; the app supplies their factual wording, metrics and links. This is genuine local inference, not Azure cloud integration or unrestricted generated narrative. Keep that provenance accurate.
 - Build the replay foundation independently of cloud services. Label simulated or scripted analyst output clearly.
 - Treat the final entry as a five-stage insights pipeline: ingest, interpret, explain, render and personalise. Show meaningful fan/analyst differences, an automatic recap and multilingual storytelling support. A replay-only prototype is not a completed entry.
 - The official challenge describes an Azure-based engine; funding is still unconfirmed. Do not imply that local development or a mocked analyst satisfies the final AI/platform expectations.
@@ -19,7 +20,7 @@ Read `README.md` and `docs/PROJECT_BRIEF.md` before implementation. The original
 
 ## Scope and evidence
 
-The initial import produced documentation only. A first local playable implementation now exists; read `docs/LOCAL_BUILD.md` for scope, commands and verification. The desktop replay is browser-verified, WebXR code is implemented but not tested on actual hardware, and AI/voice providers remain disconnected. Keep future status accurate about what is local, scripted, connected, tested on hardware, deployed or submitted.
+The initial import produced documentation only. A local playable implementation now exists; read `docs/LOCAL_BUILD.md` and `docs/FOUNDRY_LOCAL.md` for scope, commands and verification. The desktop replay is browser-verified, Foundry Local is connected in development, and WebXR code is implemented but not tested on actual hardware. Cloud AI and voice remain disconnected. Keep future status accurate about what is local, scripted, AI-curated, connected, tested on hardware, deployed or submitted.
 
 Run `npm test` and `npm run build` for relevant changes. Keep pure replay/data calculations independent of rendering and derive explanation metrics from those records. Do not replace the local analysis label with a claim of live AI until a real model is connected and verified.
 

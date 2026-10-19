@@ -4,6 +4,8 @@ Imported on 15 October 2026 from the [shared project conversation](https://chatg
 
 Updated the same day using the authenticated [official participant brief](source/OFFICIAL_BRIEF.md). The mappings below are implementation proposals derived from that brief, not statements that the organisers have approved this concept. The first local version is now built; current implementation evidence and limitations are in [LOCAL_BUILD.md](LOCAL_BUILD.md).
 
+On 19 October, the user authorised [Foundry Local development](FOUNDRY_LOCAL.md) without cloud spending. A native model now curates recorded statements in the desktop build. Azure cloud, voice and actual headset verification remain pending; local inference does not establish compliance with the challenge's Azure platform requirement.
+
 ## Product idea
 
 Become the director of a football replay. Stand inside a reconstructed, fictional match moment and control time and viewpoint through voice and controller pointing. The feeling is a calm, summonable set of spatial controls rather than menus covering the action.
@@ -24,7 +26,7 @@ Two complementary layers:
 5. Ask why the chance developed; show the relevant players, lane and supporting evidence.
 6. Clear the overlays and resume the same replay without leaving VR.
 
-This is the end-to-end acceptance scenario. The initial local milestone can cover the replay controls while voice and genuine AI remain pending credits.
+This is the end-to-end acceptance scenario. Replay controls and local AI curation are implemented on desktop; voice and Azure cloud remain pending funding. The typed command input currently stands in for voice.
 
 ## Interaction requirements
 

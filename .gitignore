@@ -8,6 +8,9 @@ dist/
 *.local
 *.pem
 *.key
+output/
+.foundry/
+.playwright-cli/
 
 # Imported conversation stays local; public project briefs are included.
 docs/source/SHARED_CHAT.md
