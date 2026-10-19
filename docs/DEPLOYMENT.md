@@ -38,6 +38,12 @@ npx --yes vercel@63.1.0 deploy --prebuilt --prod --yes --scope brendans-projects
 
 The CLI version is pinned because 64.2.0's local installation had missing optional/native dependencies during this setup; 63.1.0 completed successfully.
 
+## Public source repository — 19 October 2026
+
+The user authorised publication of [brensterbaz/inside-the-moment](https://github.com/brensterbaz/inside-the-moment). Its default branch is `main`; the initial source commit is `8b9f6a5`. The repository includes the app, tests, dependency lockfile, project documentation and third-party notices. Environment files, `.vercel/`, generated builds, dependencies and the imported chat archive are excluded. A pattern-based scan of the initial 30 tracked files found no credential matches; this is not a guarantee that every possible secret format is detectable.
+
+GitHub publication does not deploy a new app version or connect Azure. The static Vercel test site remains separate.
+
 ## Verification
 
 - Six replay tests passed; TypeScript and Vite build passed.

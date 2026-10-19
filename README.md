@@ -35,4 +35,4 @@ The [full participant brief](https://innovationstudio.microsoft.com/hackathons/i
 
 Test the WebXR entry, controller interaction, floating panel, movement and performance on the actual Quest 2 using a secure development origin. Then connect genuine voice/AI services once credits are confirmed. The local desktop version is verified; it is not a completed competition entry.
 
-Azure Speech, Microsoft Foundry and hosted APIs remain conditional on confirmed hackathon credits. The static HTTPS test site is published on the existing Vercel account; no AI service, database, public repository or hackathon submission was created.
+Azure Speech, Microsoft Foundry and hosted APIs remain conditional on confirmed hackathon credits. The static HTTPS test site is published on the existing Vercel account. The [public source repository](https://github.com/brensterbaz/inside-the-moment) was created on **19 October 2026**. No AI service, database or hackathon submission has been created.

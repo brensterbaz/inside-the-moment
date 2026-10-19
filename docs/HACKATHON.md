@@ -31,7 +31,7 @@ Organisers do not supply match footage/data. Judges may request specialised hard
 
 ## Import status
 
-The signed-in portal displayed **Update registration**, consistent with an existing registration; its details were not inspected or changed. Credits, eligibility, award-category choice and submission remain unconfirmed. A first local playable prototype has since been built; see [implementation status](LOCAL_BUILD.md). No registration change, publication, cloud deployment, spending or entry has occurred.
+The signed-in portal displayed **Update registration**, consistent with an existing registration; its details were not inspected or changed. Credits, eligibility, award-category choice and submission remain unconfirmed. A first local playable prototype has since been built; see [implementation status](LOCAL_BUILD.md). The static HTTPS test site was published on 15 October, and the [public GitHub repository](https://github.com/brensterbaz/inside-the-moment) on 19 October, with the user's authorisation. Neither action is a hackathon submission. No Azure spending or entry has occurred.
 
 The public [resource playlists](https://github.com/microsoft/insidethegamehackathon/blob/main/RESOURCE%20PLAYLISTS.md) cover GitHub Copilot, Azure AI Foundry, Foundry agents, agentic workflows and data. This resource page does not confirm an Azure credit offer.
 
