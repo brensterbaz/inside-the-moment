@@ -76,4 +76,4 @@ npm run build
 - [x] Start `npm run dev:foundry`. Use Playwright to exercise real analysis, citations, settings, seek during pending analysis, fallback and automatic recap. Save screenshots under ignored `output/playwright/`.
 - [x] Verify the static production bundle excludes the native SDK/server and still has a usable scripted fallback when the local backend is absent.
 - [x] Update project documentation to distinguish genuine local AI, Azure cloud still disconnected, hosted static demo unchanged and Quest hardware still untested.
-- [ ] Commit the focused work and publish a reviewable branch/PR after tests and checks pass. Do not merge or redeploy the public app in this milestone.
+- [x] Commit the focused work and publish a reviewable branch/PR after tests and checks pass. Do not merge or redeploy the public app in this milestone. Delivered as [draft PR #1](https://github.com/brensterbaz/inside-the-moment/pull/1).
